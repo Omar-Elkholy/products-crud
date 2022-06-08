@@ -1,0 +1,177 @@
+<section class="products">
+    <div class="container py-5">
+        <div>
+            <div class="form-group">
+                <div class="custom-select position-relative">
+                    <div class="position-relative">
+                        <input placeholder="Select or add new product" (click)="showDropDown = !showDropDown" readonly
+                            class="form-control bg-white select-input" type="text" [value]="selectedProductName">
+                        <span (click)="showDropDown = !showDropDown" class="arrow-down">
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </span>
+                        <div *ngIf="showDropDown" class="select-body">
+                            <div class="search-input position-relative">
+                                <input (keyup) = "search($event)" class="form-control" type="search" placeholder="Search products">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                            </div>
+                            <div (click) = "addProduct()" class="add-product d-flex align-items-center py-4">
+                                <i class="fa-solid fa-plus"></i>
+                                <span class="mx-2">Add new product</span>
+                            </div>
+                            <ul>
+                                <li (click) = "selectionChange(product)" *ngFor="let product of products">
+                                    {{product.name}}
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <form [formGroup]="form" *ngIf="showForm">
+                <div class="form-group">
+                    <label class="mb-1" for="name">Name</label>
+                    <input
+                        [ngClass]="{'is-invalid': (form.controls['name'].touched && form.controls['name'].errors),
+                        'is-valid': (form.controls['name'].touched && !form.controls['name'].errors && form.controls['name'].value)}"
+                        class="form-control" formControlName="name" type="text" placeholder="Name">
+                </div>
+                <div class="form-group">
+                    <label class="mb-1">Product type</label>
+                    <div class="d-flex">
+                        <div class="form-check">
+                            <input class="form-check-input" formControlName="type" value="1" type="radio" id="type1">
+                            <label class="form-check-label" for="type1">
+                                Type 1
+                            </label>
+                        </div>
+                        <div class="form-check mx-4">
+                            <input class="form-check-input" formControlName="type" value="2" type="radio" id="type2"
+                                checked>
+                            <label class="form-check-label" for="type2">
+                                Type 2
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="mb-2">
+                        <label class="mb-1" for="name">Product category</label>
+                        <input
+                            [ngClass]="{'is-invalid': (form.controls['category'].touched && form.controls['category'].errors),
+                                'is-valid': (form.controls['category'].touched && !form.controls['category'].errors && form.controls['category'].value)}"
+                            class="form-control" formControlName="category" type="text" placeholder="Category">
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" formControlName="isSub" type="checkbox" value="sub"
+                            id="sub-group">
+                        <label class="form-check-label" for="sub-group">
+                            This is a sub group
+                        </label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="mb-1" for="name">Reference ID 
+                                <span style="color: #828282; opacity: .8;">(Optional)</span>
+                            </label>
+                            <input
+                                [ngClass]="{'is-valid': (form.controls['refId'].touched && !form.controls['refId'].errors && form.controls['refId'].value)}"
+                                class="form-control" formControlName="refId" type="text" placeholder="Id">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="mb-1" for="name">Password</label>
+                            <div class="position-relative">
+                                <input
+                                    [ngClass]="{'is-invalid': (form.controls['password'].touched && form.controls['password'].errors)}"
+                                    class="form-control" formControlName="password"
+                                    [type]="passHidden ? 'password' : 'text'" placeholder="Password">
+                                <i *ngIf="form.controls['password'].value" (click)="passHidden = !passHidden"
+                                    [ngClass]="{'fa-face-rolling-eyes': passHidden, 'fa-eye-slash': !passHidden}"
+                                    class="fa-solid pass-icon"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="mb-1 d-block" for="name">Delivery fees</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="basic-addon1">EGP</span>
+                                </div>
+                                <input
+                                    [ngClass]="{'is-invalid': (form.controls['fees'].touched && form.controls['fees'].errors),
+                                'is-valid': (form.controls['fees'].touched && !form.controls['fees'].errors && form.controls['fees'].value)}"
+                                    class="form-control" formControlName="fees" type="text" placeholder="Delivery fees">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="mb-1 d-block" for="name">Delivery fees</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="basic-addon1">%</span>
+                                </div>
+                                <input
+                                    [ngClass]="{'is-invalid': (form.controls['feesPercent'].touched && form.controls['feesPercent'].errors),
+                                'is-valid': (form.controls['feesPercent'].touched && !form.controls['feesPercent'].errors && form.controls['feesPercent'].value)}"
+                                    class="form-control" formControlName="feesPercent" type="text"
+                                    placeholder="Delivery fees">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-between fw-bold">
+                    <button *ngIf="selectedProductId" (click)="openModal('delete')" type="button"
+                        class="btn btn-light text-danger">Delete</button>
+                    <div class="ms-auto">
+                        <button (click)="resetForm()" type="button" class="btn btn-light">Cancel</button>
+                        <button (click)="openModal('submit')" [disabled]="!form.valid" type="button"
+                            class="btn-blue btn btn-info text-white">Save</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+<!-- Modal -->
+<ng-template #editModal let-modal>
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">
+            <span *ngIf="modalType === 'submit'">Save changes?</span>
+            <span *ngIf="modalType === 'delete'">Delete "{{selectedProductName}}"?</span>
+        </h4>
+        <span class="modal-close" (click)="modal.dismiss()">
+            <i class="fa-solid fa-xmark"></i>
+        </span>
+    </div>
+
+    <div class="modal-body">
+        <form>
+            <div class="form-group">
+                <p *ngIf="modalType === 'submit'">Are you sure you want to save changes made?</p>
+                <p *ngIf="modalType === 'delete'">
+                    Are you sure you want to delete {{selectedProductName}}? One deleted, you won't be able to access it
+                    again.
+                </p>
+            </div>
+        </form>
+
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-light" (click)="modal.dismiss()">Discard</button>
+        <button [ngClass]="{'btn-danger': modalType === 'delete', 'btn-primary': modalType === 'submit'}" type="button"
+            class="btn" (click)="modal.close('save')">
+            <span class="text-white" *ngIf="modalType === 'delete'">Delete</span>
+            <span class="text-white" *ngIf="modalType === 'submit'">Save</span>
+        </button>
+    </div>
+</ng-template>

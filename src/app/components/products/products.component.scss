@@ -1,0 +1,130 @@
+*:not(i) {
+    font-family: 'Poppins', sans-serif;
+    color: #3D3D3D;
+    font-size: 14px;
+}
+
+input::placeholder {
+    color: #828282;
+}
+
+.products {
+    min-height: 100vh;
+    background-color: #F6F7FB;
+    
+    .container>div {
+        width: 50%;
+    }
+
+    form input::placeholder {
+        font-size: 12px;
+    }
+
+    .form-group {
+        margin-bottom: 24px;
+
+        .input-group-text {
+            // CHANGE THE BACKGROUND OF THE PREFIX TEXT OF FEES
+            background-color: #fff;
+        }
+
+        .pass-icon {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            right: 13.46px;
+            z-index: 3;
+        }
+
+        input {
+            box-shadow: none;
+        }
+
+        // REMOVE THE DEFAULT EYE
+        input[type=password]::-ms-reveal,
+        input[type=password]::-ms-clear {
+            display: none;
+        }
+
+        .custom-select {
+            .select-input {
+                cursor: auto;
+            }
+            .select-body {
+                position: absolute;
+                border: 1px solid #D6D6D6;
+                top: calc(100% + 10px);
+                left: 0;
+                right: 0;
+                padding: 12px;
+                background-color: #fff;
+                border-radius: 5px;
+                .search-input {
+                    position: relative;
+                    i {
+                        position: absolute;
+                        right: 12px;
+                        top: 50%;
+                        color: #828282;
+                        opacity: .7;
+                        transform: translateY(-50%);
+                    }
+                }
+                ul {
+                    list-style: none;
+                    padding-left: 0;
+                    max-height: 190px;
+                    overflow: auto  ;
+                    li {
+                        padding-bottom: 16px;
+                        cursor: pointer;
+                        &:last-child {
+                            padding-bottom: 0;
+                        }
+                    }
+                }
+                .add-product {
+                    position: relative;
+                    cursor: pointer;
+                    &::after {
+                        content: '';
+                        position: absolute;
+                        bottom: 14px;
+                        height: 1px;
+                        width: 100%;
+                        left: 0;
+                        background-color: #D6D6D6;
+                    }
+                }
+            }
+            .fa-chevron-down {
+                position: absolute;
+                right: 15px;
+                top: 50%;
+                transform: translateY(-50%);
+            }
+        }
+
+    }
+
+    .btn-blue {
+        background-color: #00BCB4 !important;
+    }
+}
+
+button:not(.close) {
+    width: 94px;
+    height: 40px;
+    box-shadow: none !important;
+}
+
+.modal-close {
+    font-size: 20px;
+    cursor: pointer;
+}
+
+@media(max-width: 992px) {
+    .products .container>div {
+        width: 100%;
+    }
+}
